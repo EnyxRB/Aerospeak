@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>	
+		<title>Aerospeak App</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/layout.css">
+		<script type="text/javascript" src="jscript/command.js"></script>
+	</head>
+	<body>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+				
+		<div class="container">
+			<div class="navbar">
+				<h1>Aerospeak Console</h1>
+				<a href="/login" id="login" class="btn btn-primary">Log in with Spotify</a>
+				<span class="nav-details">
+				<a href="settings.html"><img class="settings-img" src="images/settings.png"></a>
+				Node.js server</br>Aerospeak Version 1.0
+				</span>
+			</div>
+			
+			<h3>Text Command</h3>
+			
+			<input id="text-cmd" type="text" placeholder="enter a command..." name="command"><br>
+			<input type="button" id="submit">
+		
+			<h3 class="live"><img src="images/mic.png">Live Command</h3>
+			<p id="mic-status">Mic status: <span id="mic-mute">live</span></p>
+			<div id="live-cmd"></div>
+			
+			<script type="text/javascript" src="jscript/speech.js"></script>
+						
+			<h3>Command Log</h3>
+			<div id="cmd-log" class="command-log">
+				<ul id="cmd-list">
+				</ul>
+			</div>
+		</div>	
+
+		<script type="text/javascript">
+			$("#text-cmd").attr("autocomplete", "off");
+		
+			$("#text-cmd").keyup(function(event){
+				if(event.keyCode == 13){				
+					var text = document.getElementById('text-cmd').value;
+					//If string without spaces is blank
+					if (text.replace(/ /g,'') != ""){
+						var textlower = text.toLowerCase();
+						var split = textlower.split(" ");
+						if (split[0]!='john'){
+							textlower = 'john ' + textlower;
+						}
+						console.log("text:>"+textlower);
+						if (isCommand(textlower)){
+							$.ajax({
+							  url: '/send_cmd',
+							  data: {
+								'cmd': textlower
+							  }
+							}).done(function(data) {
+								var reply = data.reply;
+								var isCmd = data.is_cmd;
+								if (isCmd){
+									$('#cmd-list').prepend('<li>'+formatCmd(textlower,'Text')+'</li>');
+									if (reply != ""){
+										$('#cmd-list').prepend('<li>'+formatCmd(reply,'Reply')+'</li>');
+									}
+								}
+								else{
+									$('#cmd-list').prepend('<li>'+formatCmd('Invalid Command ('+textlower+')','Text')+'</li>');
+								}
+							});	
+
+							document.getElementById('text-cmd').value = "";
+						}	
+					}					
+				}
+			});		
+		
+			(function() {
+
+				function getHashParams() {
+				  var hashParams = {};
+				  var e, r = /([^&;=]+)=?([^&;]*)/g,
+					  q = window.location.hash.substring(1);
+				  while ( e = r.exec(q)) {
+					 hashParams[e[1]] = decodeURIComponent(e[2]);
+				  }
+				  return hashParams;
+				}
+
+				var params = getHashParams();
+
+				var access_token = params.access_token,
+					refresh_token = params.refresh_token,
+					error = params.error;
+
+				if (error) {
+				  alert('There was an error during the authentication');
+				} else {
+				  if (access_token) {
+					$.ajax({
+						url: 'https://api.spotify.com/v1/me',
+						headers: {
+							'Authorization': 'Bearer ' + access_token
+						},
+						success: function(response) {
+							$('#login').hide();
+							//$('#loggedin').show();
+						}
+					});
+				  } else {
+					  // render initial screen
+					  $('#login').show();
+					  //$('#loggedin').hide();
+				  }
+				}
+			})();
+		</script>
+		
+	</body>
+</html>

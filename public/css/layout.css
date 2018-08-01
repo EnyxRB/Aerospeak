@@ -1,0 +1,95 @@
+body{
+	background-color: rgb(250,250,250);
+}
+
+.container{
+
+}
+
+#text-cmd{
+	background-color: white;
+	height: 35px;
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 10px;
+	box-shadow: 0 0 10px 0 #bbb;
+	margin-bottom: 30px;
+	font-size: 14px;
+	line-height: 25px;
+}
+
+#live-cmd{
+	background-color: white;
+	height: 200px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	box-shadow: 0 0 10px 0 #bbb;
+	margin-bottom: 30px;
+	font-size: 14px;
+	line-height: 25px;
+}
+
+h1{
+	float: left;
+}
+
+.settings-img{
+	float: left;
+	margin-right: 20px;
+	margin-top: 10px;
+}
+
+.nav-details{
+	float: right;
+	display: block;
+	margin-top: 20px;
+}
+
+#cmd-log{
+	color: white;
+	background-color: black;
+	height: 300px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	box-shadow: 0 0 10px 0 #bbb;
+	margin-bottom: 30px;
+	font-size: 14px;
+	line-height: 25px;
+	overflow-y:scroll;
+}
+
+.command-log ul{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.command-log ul li{
+	font-family: "Courier New", Courier, monospace;
+	margin: 0;
+}
+
+#mic-status{
+	float: right;
+	display: block;
+	position: relative;
+	margin-top: -35px;
+}
+
+#mic-mute{
+	color: green;
+}
+
+.live img{
+	margin-bottom: 3px;
+	margin-right: 3px;
+}
+
+.btn{
+	margin-left: 530px;
+	margin-top: 30px;
+}
+
+#submit{
+	display: none;
+}
