@@ -1,8 +1,5 @@
 /*
 TO DO:
-
-use blue snowball as mic in house
-
 #cmds.js#
 -Currently if key words are used in filler text, the command is invalid,
 prehaps check if the keywords are in the correct places after parsing.
